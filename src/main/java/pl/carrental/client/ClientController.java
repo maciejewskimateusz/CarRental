@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.carrental.client.dto.ClientDto;
+import pl.carrental.client.dto.ClientRentDto;
 
 import java.net.URI;
 import java.util.List;
@@ -32,6 +34,11 @@ public class ClientController {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/rents")
+    public List<ClientRentDto> getAllClientRents(@PathVariable Long id) {
+        return service.getAllClientRents(id);
     }
 
 

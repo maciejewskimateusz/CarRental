@@ -1,6 +1,7 @@
 package pl.carrental.reservation;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.carrental.car.Car;
 import pl.carrental.client.Client;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Rental {
 
     @Id

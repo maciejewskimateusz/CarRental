@@ -1,6 +1,9 @@
 package pl.carrental.client;
 
 import org.springframework.stereotype.Service;
+import pl.carrental.car.exceptions.ClientNotFoundException;
+import pl.carrental.client.dto.ClientDto;
+import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
 
 import java.util.List;
@@ -33,6 +36,14 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
+    public List<ClientRentDto> getAllClientRents(Long clientId) {
+        return clientRepository.findById(clientId)
+                .map(Client::getRentals)
+                .orElseThrow(ClientNotFoundException::new)
+                .stream().map(ClientRentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public ClientDto save(ClientDto client) {
         if (clientRepository.findByPesel(client.getPesel()).isPresent()) {
             throw new AlreadyClientExist();
@@ -45,7 +56,7 @@ public class ClientService {
     public ClientDto update(ClientDto client) {
         Optional<Client> clientByPesel = clientRepository.findByPesel(client.getPesel());
         clientByPesel.ifPresent(c -> {
-            if (!c.getId().equals(client.getId())){
+            if (!c.getId().equals(client.getId())) {
                 throw new AlreadyClientExist();
             }
         });

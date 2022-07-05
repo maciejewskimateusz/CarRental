@@ -1,10 +1,13 @@
 package pl.carrental.client;
 
 import lombok.*;
+import pl.carrental.reservation.Rental;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -25,6 +28,8 @@ public class Client {
     @Column(unique = true)
     private String idNumber;
     private LocalDate birthDate;
+    @OneToMany(mappedBy = "client")
+    private Set<Rental> rentals = new HashSet<>();
 
 
     @Override

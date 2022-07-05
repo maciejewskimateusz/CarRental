@@ -1,5 +1,7 @@
 package pl.carrental.client;
 
+import pl.carrental.client.dto.ClientDto;
+
 public class ClientMapper {
 
     static ClientDto toDto(Client entity) {

@@ -1,11 +1,10 @@
 package pl.carrental.car;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.carrental.car.dto.CarDto;
+import pl.carrental.car.dto.CarRentalDto;
 
 import java.net.URI;
 import java.util.List;
@@ -40,6 +39,11 @@ public class CarController {
         return carService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/rentals")
+    public List<CarRentalDto> getAllCarRentals(@PathVariable Long id) {
+        return carService.getAllCarRentals(id);
     }
 
 

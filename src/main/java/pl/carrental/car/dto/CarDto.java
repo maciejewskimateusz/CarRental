@@ -15,6 +15,7 @@ public class CarDto {
 
     private Long id;
     private FuelType fuelType;
+    private String name;
     private CarType carType;
     private BigDecimal pricePerDay;
     private String registrationNumber;
