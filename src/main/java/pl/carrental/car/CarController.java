@@ -1,7 +1,9 @@
 package pl.carrental.car;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.carrental.car.dto.CarDto;
 
@@ -19,12 +21,27 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarDto> findAll(@RequestParam(required = false)CarType carType) {
-        if (carType != null) {
+    public List<CarDto> findAll(@RequestParam(required = false) CarType carType) {
+        if (carType == null) {
             return carService.findAll();
         } else
             return carService.findAllByCarType(carType);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CarDto> update(@PathVariable Long id, @RequestBody CarDto carDto) {
+        CarDto updateCar = carService.update(id, carDto);
+        return ResponseEntity.ok(updateCar);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarDto> findById(@PathVariable Long id) {
+        return carService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 
     @PostMapping
     public ResponseEntity<CarDto> save(@RequestBody CarDto car) {
