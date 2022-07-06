@@ -10,4 +10,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @Query("select r from Rental r where r.returnDate is null")
     List<Rental> findAllRunningRentals();
+
+    Optional<Rental> findByCar_IdAndReturnDateIsNull(Long id);
 }

@@ -14,6 +14,7 @@ values ('Audi A6', 'EBEYY10', 'DIESEL', 'KOMBI', 200000, 150),
 
 insert into rental(rental_date, return_date, client_id, car_id)
 values ('2022-07-04', '2022-07-05', 1, 1),
+       ('2022-02-04', '2022-03-05', 1, 1),
        ('2022-07-04', null, 2, 3),
        ('2022-07-04', null , 3, 4),
        ('2022-05-05', '2022-06-01', 1, 2);

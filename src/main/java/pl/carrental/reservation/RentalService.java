@@ -1,10 +1,18 @@
 package pl.carrental.reservation;
 
 import org.springframework.stereotype.Service;
+import pl.carrental.car.Car;
 import pl.carrental.car.CarRepository;
+import pl.carrental.client.Client;
 import pl.carrental.client.ClientRepository;
+import pl.carrental.reservation.exceptions.CarIsAlreadyRentedException;
+import pl.carrental.reservation.exceptions.RentalAlreadyFinishedException;
+import pl.carrental.reservation.exceptions.RentalNotFoundException;
 
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +40,31 @@ public class RentalService {
                 .collect(Collectors.toList());
     }
 
-//    RentalDto createRental(RentalDto rentalDto) {
-//
-//    }
+    RentalDto createRental(RentalDto rentalDto) {
+        rentalRepository.findByCar_IdAndReturnDateIsNull(rentalDto.getCarId())
+                .ifPresent(rental -> {
+                    throw new CarIsAlreadyRentedException();
+                });
+        Optional<Client> client = clientRepository.findById(rentalDto.getClientId());
+        Optional<Car> car = carRepository.findById(rentalDto.getCarId());
+        Rental rental = new Rental();
+        rental.setRentalDate(LocalDate.now());
+        rental.setCar(car.get());
+        rental.setClient(client.get());
+        Rental savedRental = rentalRepository.save(rental);
+        return RentalMapper.toDto(savedRental);
+    }
+
+
+    @Transactional
+    public LocalDate finishRental(Long id) {
+        Rental rental = rentalRepository.findById(id)
+                .orElseThrow(RentalNotFoundException::new);
+        if (rental.getReturnDate() != null) {
+            throw new RentalAlreadyFinishedException();
+        } else {
+            rental.setReturnDate(LocalDate.now());
+        }
+        return rental.getReturnDate();
+    }
 }
