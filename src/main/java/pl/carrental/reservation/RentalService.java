@@ -10,7 +10,10 @@ import pl.carrental.reservation.exceptions.RentalAlreadyFinishedException;
 import pl.carrental.reservation.exceptions.RentalNotFoundException;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,7 +60,7 @@ public class RentalService {
 
 
     @Transactional
-    public LocalDate finishRental(Long id) {
+    public BigDecimal finishRental(Long id) {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(RentalNotFoundException::new);
         if (rental.getReturnDate() != null) {
@@ -65,6 +68,14 @@ public class RentalService {
         } else {
             rental.setReturnDate(LocalDate.now());
         }
-        return rental.getReturnDate();
+        return countAmountToPay(id);
+    }
+
+    private BigDecimal countAmountToPay(Long id) {
+        Rental rental = rentalRepository.findById(id)
+                .orElseThrow(RentalNotFoundException::new);
+        long days = Period.between(rental.getRentalDate(), rental.getReturnDate()).getDays();
+        BigDecimal pricePerDay = rental.getCar().getPricePerDay();
+        return pricePerDay.multiply(BigDecimal.valueOf(days));
     }
 }

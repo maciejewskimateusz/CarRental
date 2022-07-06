@@ -57,6 +57,4 @@ public class CarController {
                 .toUri();
         return ResponseEntity.created(location).body(savedCar);
     }
-
-
 }

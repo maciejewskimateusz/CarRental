@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.carrental.car.Car;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,8 +42,8 @@ public class RentalController {
 
     @PostMapping("/{id}/return")
     ResponseEntity returnCar(@PathVariable Long id) {
-        LocalDate returnDate = rentalService.finishRental(id);
-        return ResponseEntity.accepted().body(returnDate);
+        BigDecimal amountToPay = rentalService.finishRental(id);
+        return ResponseEntity.accepted().body(amountToPay);
     }
 
 }

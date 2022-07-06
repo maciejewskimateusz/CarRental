@@ -5,7 +5,10 @@ import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
 import pl.carrental.car.exceptions.CarNotFoundException;
 import pl.carrental.car.exceptions.DuplicatedRegistrationNumber;
+import pl.carrental.reservation.Rental;
+import pl.carrental.reservation.RentalRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,7 +67,7 @@ public class CarService {
 
     List<CarRentalDto> getAllCarRentals(Long id) {
         return carRepository.findById(id)
-                .map(car -> car.getRentals())
+                .map(Car::getRentals)
                 .orElseThrow(CarNotFoundException::new)
                 .stream().map(CarRentalMapper::toDto)
                 .collect(Collectors.toList());
