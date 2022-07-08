@@ -3,15 +3,13 @@ package pl.carrental.reservation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.carrental.car.Car;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rental")
+@RequestMapping("/api/rentals")
 public class RentalController {
 
     private RentalService rentalService;
@@ -41,7 +39,7 @@ public class RentalController {
     }
 
     @PostMapping("/{id}/return")
-    ResponseEntity returnCar(@PathVariable Long id) {
+    ResponseEntity<BigDecimal> returnCar(@PathVariable Long id) {
         BigDecimal amountToPay = rentalService.finishRental(id);
         return ResponseEntity.accepted().body(amountToPay);
     }

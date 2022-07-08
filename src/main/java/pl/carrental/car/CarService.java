@@ -5,10 +5,7 @@ import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
 import pl.carrental.car.exceptions.CarNotFoundException;
 import pl.carrental.car.exceptions.DuplicatedRegistrationNumber;
-import pl.carrental.reservation.Rental;
-import pl.carrental.reservation.RentalRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,14 +52,20 @@ public class CarService {
 
     CarDto update(Long id, CarDto carDto) {
 
-        Car car = carRepository.findById(id).orElseThrow(CarNotFoundException::new);
-        carRepository.findByRegistrationNumber(carDto.getRegistrationNumber()).ifPresent(c -> {
-            throw new DuplicatedRegistrationNumber();
+        carRepository.findByRegistrationNumber(carDto.getRegistrationNumber()).ifPresent(car -> {
+            if (!car.getId().equals(carDto.getId())) {
+                throw new DuplicatedRegistrationNumber();
+            }
         });
         carDto.setId(id);
         Car carEntity = CarMapper.toEntity(carDto);
         Car savedCar = carRepository.save(carEntity);
         return CarMapper.toDto(savedCar);
+    }
+
+    // TODO: 08.07.2022 zaimplementowac sprawdzanie czy nie jest przypisany klient 
+    void deleteCar(Long id) {
+        carRepository.deleteById(id);
     }
 
     List<CarRentalDto> getAllCarRentals(Long id) {

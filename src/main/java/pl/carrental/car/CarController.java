@@ -1,7 +1,9 @@
 package pl.carrental.car;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
@@ -20,17 +22,8 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarDto> findAll(@RequestParam(required = false) CarType carType) {
-        if (carType == null) {
-            return carService.findAll();
-        } else
-            return carService.findAllByCarType(carType);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CarDto> update(@PathVariable Long id, @RequestBody CarDto carDto) {
-        CarDto updateCar = carService.update(id, carDto);
-        return ResponseEntity.ok(updateCar);
+    public List<CarDto> findAll() {
+        return carService.findAll();
     }
 
 
@@ -46,6 +39,21 @@ public class CarController {
         return carService.getAllCarRentals(id);
     }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CarDto> update(@PathVariable Long id, @RequestBody CarDto carDto) {
+        if (!carDto.getId().equals(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Niezgodne id");
+        }
+        CarDto updateCar = carService.update(id, carDto);
+        return ResponseEntity.ok(updateCar);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
+        carService.deleteCar(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping
     public ResponseEntity<CarDto> save(@RequestBody CarDto car) {
