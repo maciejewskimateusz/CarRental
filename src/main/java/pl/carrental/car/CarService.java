@@ -6,9 +6,7 @@ import pl.carrental.car.dto.CarRentalDto;
 import pl.carrental.car.exceptions.CarNotFoundException;
 import pl.carrental.car.exceptions.DuplicatedRegistrationNumber;
 import pl.carrental.reservation.RentalRepository;
-import pl.carrental.reservation.exceptions.CarNotReturnedException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

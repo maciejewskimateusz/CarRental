@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class RentalService {
 
+    private static final BigDecimal PREMIUM_DISCOUNT = BigDecimal.valueOf(0.15);
     private CarRepository carRepository;
     private ClientRepository clientRepository;
     private RentalRepository rentalRepository;
@@ -76,6 +77,10 @@ public class RentalService {
                 .orElseThrow(RentalNotFoundException::new);
         long days = Period.between(rental.getRentalDate(), rental.getReturnDate()).getDays();
         BigDecimal pricePerDay = rental.getCar().getPricePerDay();
-        return pricePerDay.multiply(BigDecimal.valueOf(days));
+        BigDecimal amountToPay = pricePerDay.multiply(BigDecimal.valueOf(days));
+        if (rental.getClient().isPremium()){
+            amountToPay = amountToPay.subtract(amountToPay.multiply(PREMIUM_DISCOUNT));
+        }
+        return amountToPay;
     }
 }

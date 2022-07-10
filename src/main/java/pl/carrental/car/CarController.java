@@ -49,12 +49,6 @@ public class CarController {
         return ResponseEntity.ok(updateCar);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
-        carService.deleteCar(id);
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping
     public ResponseEntity<CarDto> save(@RequestBody CarDto car) {
         CarDto savedCar = carService.save(car);

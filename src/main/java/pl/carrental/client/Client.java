@@ -1,11 +1,13 @@
 package pl.carrental.client;
 
-import lombok.*;
-import org.springframework.validation.annotation.Validated;
-import pl.carrental.car.Car;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.carrental.reservation.Rental;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,9 +31,11 @@ public class Client {
     private String pesel;
     @Column(unique = true)
     private String idNumber;
+    @Past
     private LocalDate birthDate;
     @OneToMany(mappedBy = "client")
     private Set<Rental> rentals = new HashSet<>();
+    private boolean premium;
 
     @Override
     public boolean equals(Object o) {
