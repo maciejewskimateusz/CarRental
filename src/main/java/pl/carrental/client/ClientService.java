@@ -5,7 +5,10 @@ import pl.carrental.car.exceptions.ClientNotFoundException;
 import pl.carrental.client.dto.ClientDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
+import pl.carrental.client.exceptions.ClientIsNotAdultException;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +51,9 @@ public class ClientService {
         if (clientRepository.findByPesel(client.getPesel()).isPresent()) {
             throw new AlreadyClientExist();
         }
+        if (!checkIfClientIsAdult(client)) {
+            throw new ClientIsNotAdultException();
+        }
         Client entity = ClientMapper.toEntity(client);
         Client savedClient = clientRepository.save(entity);
         return ClientMapper.toDto(savedClient);
@@ -63,5 +69,12 @@ public class ClientService {
         Client entity = ClientMapper.toEntity(client);
         Client savedClient = clientRepository.save(entity);
         return ClientMapper.toDto(savedClient);
+    }
+
+
+    private boolean checkIfClientIsAdult(final ClientDto client) {
+        int years = Period.between(client.getBirthDate(), LocalDate.now()).getYears();
+        System.out.println(years);
+        return years >= 18;
     }
 }

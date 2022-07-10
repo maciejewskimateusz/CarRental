@@ -1,6 +1,8 @@
 package pl.carrental.client;
 
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
+import pl.carrental.car.Car;
 import pl.carrental.reservation.Rental;
 
 import javax.persistence.*;
@@ -30,7 +32,6 @@ public class Client {
     private LocalDate birthDate;
     @OneToMany(mappedBy = "client")
     private Set<Rental> rentals = new HashSet<>();
-
 
     @Override
     public boolean equals(Object o) {

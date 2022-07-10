@@ -2,6 +2,7 @@ package pl.carrental.reservation;
 
 import pl.carrental.car.Car;
 import pl.carrental.client.Client;
+import pl.carrental.reservation.dto.RentalDto;
 
 public class RentalMapper {
 

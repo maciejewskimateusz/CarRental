@@ -6,6 +6,7 @@ import pl.carrental.reservation.Rental;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,7 +30,8 @@ public class Car {
     private Integer mileage;
     private BigDecimal pricePerDay;
     @OneToMany(mappedBy = "car")
-    private Set<Rental> rentals = new HashSet<>();
+    private List<Rental> rentals;
+
 
     @Override
     public boolean equals(Object o) {

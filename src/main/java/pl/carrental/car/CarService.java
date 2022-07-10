@@ -5,7 +5,10 @@ import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
 import pl.carrental.car.exceptions.CarNotFoundException;
 import pl.carrental.car.exceptions.DuplicatedRegistrationNumber;
+import pl.carrental.reservation.RentalRepository;
+import pl.carrental.reservation.exceptions.CarNotReturnedException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,9 +17,11 @@ import java.util.stream.Collectors;
 public class CarService {
 
     private CarRepository carRepository;
+    private RentalRepository rentalRepository;
 
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, final RentalRepository rentalRepository) {
         this.carRepository = carRepository;
+        this.rentalRepository = rentalRepository;
     }
 
     List<CarDto> findAll() {
@@ -63,10 +68,6 @@ public class CarService {
         return CarMapper.toDto(savedCar);
     }
 
-    // TODO: 08.07.2022 zaimplementowac sprawdzanie czy nie jest przypisany klient 
-    void deleteCar(Long id) {
-        carRepository.deleteById(id);
-    }
 
     List<CarRentalDto> getAllCarRentals(Long id) {
         return carRepository.findById(id)

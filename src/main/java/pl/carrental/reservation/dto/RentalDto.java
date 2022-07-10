@@ -1,4 +1,4 @@
-package pl.carrental.reservation;
+package pl.carrental.reservation.dto;
 
 import lombok.Getter;
 import lombok.Setter;

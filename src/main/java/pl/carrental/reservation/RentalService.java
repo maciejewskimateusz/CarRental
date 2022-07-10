@@ -5,13 +5,13 @@ import pl.carrental.car.Car;
 import pl.carrental.car.CarRepository;
 import pl.carrental.client.Client;
 import pl.carrental.client.ClientRepository;
+import pl.carrental.reservation.dto.RentalDto;
 import pl.carrental.reservation.exceptions.CarIsAlreadyRentedException;
 import pl.carrental.reservation.exceptions.RentalAlreadyFinishedException;
 import pl.carrental.reservation.exceptions.RentalNotFoundException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
