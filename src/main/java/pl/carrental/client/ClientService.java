@@ -2,6 +2,7 @@ package pl.carrental.client;
 
 import org.springframework.stereotype.Service;
 import pl.carrental.car.exceptions.ClientNotFoundException;
+import pl.carrental.client.dto.ClientCredentialsDto;
 import pl.carrental.client.dto.ClientDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
@@ -76,5 +77,10 @@ public class ClientService {
         int years = Period.between(client.getBirthDate(), LocalDate.now()).getYears();
         System.out.println(years);
         return years >= 18;
+    }
+
+    public Optional<ClientCredentialsDto> findCredentialsByEmail(String email) {
+        return clientRepository.findByEmail(email)
+                .map(ClientCredentialsDtoMapper::map);
     }
 }
