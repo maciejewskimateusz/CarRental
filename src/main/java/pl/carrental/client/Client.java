@@ -1,12 +1,10 @@
 package pl.carrental.client;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.carrental.reservation.Rental;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -18,12 +16,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Email
     private String email;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
