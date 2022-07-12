@@ -24,11 +24,12 @@ public class CustomInMemoryUserDetailsManager implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email %s not found", username)));
     }
 
+
     private UserDetails createUserDetails(ClientCredentialsDto credentials) {
         return User.builder()
                 .username(credentials.getEmail())
                 .password(credentials.getPassword())
-                .roles(credentials.getRoles().toArray(String[]::new))
+                .roles(credentials.getRole())
                 .build();
     }
 }

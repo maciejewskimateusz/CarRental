@@ -1,13 +1,16 @@
 package pl.carrental.client;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.carrental.car.exceptions.ClientNotFoundException;
 import pl.carrental.client.dto.ClientCredentialsDto;
 import pl.carrental.client.dto.ClientDto;
+import pl.carrental.client.dto.ClientRegistrationDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
 import pl.carrental.client.exceptions.ClientIsNotAdultException;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -18,9 +21,11 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private ClientRepository clientRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<ClientDto> findById(Long id) {
@@ -82,5 +87,22 @@ public class ClientService {
     public Optional<ClientCredentialsDto> findCredentialsByEmail(String email) {
         return clientRepository.findByEmail(email)
                 .map(ClientCredentialsDtoMapper::map);
+    }
+
+    @Transactional
+    public void register(ClientRegistrationDto clientRegistrationDto) {
+        Client newClient = Client.builder()
+                .firstName(clientRegistrationDto.getFirstName())
+                .lastName(clientRegistrationDto.getLastName())
+                .email(clientRegistrationDto.getEmail())
+                .password(passwordEncoder.encode(clientRegistrationDto.getPassword()))
+                .pesel(clientRegistrationDto.getPesel())
+                .idNumber(clientRegistrationDto.getIdNumber())
+                .birthDate(clientRegistrationDto.getBirthDate())
+                .role("USER")
+                .premium(false)
+                .build();
+
+        clientRepository.save(newClient);
     }
 }

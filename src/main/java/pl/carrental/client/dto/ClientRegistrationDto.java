@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Getter
 public class ClientRegistrationDto {
 
+    private Long id;
     private String email;
     private String password;
-    private Long id;
     private String firstName;
     private String lastName;
     private String pesel;

@@ -13,5 +13,5 @@ public class ClientCredentialsDto {
 
     private String email;
     private String password;
-    private Set<String> roles;
+    private String role;
 }
