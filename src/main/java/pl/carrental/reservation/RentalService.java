@@ -78,7 +78,7 @@ public class RentalService {
         long days = Period.between(rental.getRentalDate(), rental.getReturnDate()).getDays();
         BigDecimal pricePerDay = rental.getCar().getPricePerDay();
         BigDecimal amountToPay = pricePerDay.multiply(BigDecimal.valueOf(days));
-        if (rental.getClient().isPremium()){
+        if (rental.getClient().isPremium()) {
             amountToPay = amountToPay.subtract(amountToPay.multiply(PREMIUM_DISCOUNT));
         }
         return amountToPay;

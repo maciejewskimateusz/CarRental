@@ -8,13 +8,13 @@ values ('Jan', 'Kowalski', '90101222457', 'ASD993', '1990-10-12', true, 'kowalsk
        ('Wojciech', 'Sokolik', '82010877245', 'SUPE99', '1982-01-08', false, 'sokolik@o2.pl',
         '{MD5}{gcbs7DFiRO4asVnRDWJ3dzxFRV3hjREwZERh6wFipXI=}3d3d786860e7740c4dd001e81c824fae', 'USER');
 
-insert into car(name, registration_number, fuel_type, car_type, mileage, price_per_day)
-values ('Audi A6', 'EBEYY10', 'DIESEL', 'KOMBI', 200000, 150),
-       ('BMW X5', 'WW101010', 'PETROL', 'SUV', 90122, 350),
-       ('Mazda 6', 'EP10921', 'PETROL', 'KOMBI', 1231412, 200),
-       ('Porsche', 'WW10000', 'PETROL', 'PREMIUM', 10000, 500),
-       ('Audi Q7', 'KR12311', 'PETROL', 'SUV', 170000, 380),
-       ('Citroen C1', 'EOP12031', 'LPG', 'SMALL', 901231, 100);
+insert into car(name, registration_number, fuel_type, car_type, price_per_day)
+values ('Audi A6', 'EBEYY10', 'DIESEL', 'KOMBI', 150),
+       ('BMW X5', 'WW101010', 'PETROL', 'SUV', 350),
+       ('Mazda 6', 'EP10921', 'PETROL', 'KOMBI', 200),
+       ('Porsche', 'WW10000', 'PETROL', 'PREMIUM', 500),
+       ('Audi Q7', 'KR12311', 'PETROL', 'SUV', 380),
+       ('Citroen C1', 'EOP12031', 'LPG', 'SMALL', 100);
 
 insert into rental(rental_date, return_date, client_id, car_id)
 values ('2022-07-04', '2022-07-05', 1, 1),

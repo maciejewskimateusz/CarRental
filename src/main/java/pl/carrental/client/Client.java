@@ -12,11 +12,11 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class Client {
 
     @Id
@@ -36,20 +36,21 @@ public class Client {
     private String idNumber;
     @Past
     private LocalDate birthDate;
-    @OneToMany(mappedBy = "client")
-    private Set<Rental> rentals = new HashSet<>();
     private boolean premium;
+    @OneToMany(mappedBy = "client")
+    private Set<Rental> rentals;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return Objects.equals(id, client.id) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(pesel, client.pesel) && Objects.equals(idNumber, client.idNumber) && Objects.equals(birthDate, client.birthDate);
+        return premium == client.premium && Objects.equals(id, client.id) && Objects.equals(email, client.email) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(pesel, client.pesel) && Objects.equals(idNumber, client.idNumber) && Objects.equals(birthDate, client.birthDate) && Objects.equals(rentals, client.rentals);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, pesel, idNumber, birthDate);
+        return Objects.hash(id, email, password, role, firstName, lastName, pesel, idNumber, birthDate, premium, rentals);
     }
 }
+

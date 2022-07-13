@@ -36,11 +36,15 @@ public class ClientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/rents")
+    @GetMapping("/{id}/rents/")
     public List<ClientRentDto> getAllClientRents(@PathVariable Long id) {
-        return service.getAllClientRents(id);
+        return service.getAllClientRentals(id);
     }
 
+    @GetMapping("/{id}/rents/active")
+    public List<ClientRentDto> getAllClientActiveRentals(@PathVariable Long id) {
+        return service.getAllClientActiveRentals(id);
+    }
 
     @PostMapping
     public ResponseEntity<ClientDto> create(@RequestBody ClientDto client) {
@@ -62,4 +66,11 @@ public class ClientController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Niezgodne id");
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -9,6 +9,7 @@ import pl.carrental.client.dto.ClientRegistrationDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
 import pl.carrental.client.exceptions.ClientIsNotAdultException;
+import pl.carrental.reservation.RentalRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -21,10 +22,12 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private ClientRepository clientRepository;
+    private RentalRepository rentalRepository;
     private PasswordEncoder passwordEncoder;
 
-    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
+    public ClientService(ClientRepository clientRepository, RentalRepository rentalRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.rentalRepository = rentalRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -45,12 +48,18 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-    public List<ClientRentDto> getAllClientRents(Long clientId) {
+    public List<ClientRentDto> getAllClientRentals(Long clientId) {
         return clientRepository.findById(clientId)
                 .map(Client::getRentals)
                 .orElseThrow(ClientNotFoundException::new)
                 .stream().map(ClientRentMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<ClientRentDto> getAllClientActiveRentals(Long clientId) {
+        return rentalRepository.findAllByClient_IdAndReturnDateIsNull(clientId)
+                        .stream().map(ClientRentMapper::toDto)
+                        .collect(Collectors.toList());
     }
 
     public ClientDto save(ClientDto client) {
@@ -75,6 +84,12 @@ public class ClientService {
         Client entity = ClientMapper.toEntity(client);
         Client savedClient = clientRepository.save(entity);
         return ClientMapper.toDto(savedClient);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        clientRepository.findById(id)
+                .ifPresent(client -> clientRepository.deleteById(id));
     }
 
 

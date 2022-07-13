@@ -11,7 +11,6 @@ public class CarMapper {
         dto.setCarType(entity.getCarType());
         dto.setFuelType(entity.getFuelType());
         dto.setRegistrationNumber(entity.getRegistrationNumber());
-        dto.setMileage(entity.getMileage());
         dto.setPricePerDay(entity.getPricePerDay());
         return dto;
     }
@@ -24,7 +23,6 @@ public class CarMapper {
         car.setFuelType(dto.getFuelType());
         car.setPricePerDay(dto.getPricePerDay());
         car.setRegistrationNumber(dto.getRegistrationNumber());
-        car.setMileage(dto.getMileage());
         return car;
     }
 }
