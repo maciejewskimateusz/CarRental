@@ -1,4 +1,4 @@
-package pl.carrental.client;
+package pl.carrental.client.mapper;
 
 import pl.carrental.car.Car;
 import pl.carrental.client.dto.ClientRentDto;
@@ -6,7 +6,7 @@ import pl.carrental.reservation.Rental;
 
 public class ClientRentMapper {
 
-    static ClientRentDto toDto(Rental rental) {
+    public static ClientRentDto toDto(Rental rental) {
 
         ClientRentDto clientRentDto = new ClientRentDto();
         Car car = rental.getCar();

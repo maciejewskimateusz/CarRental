@@ -9,6 +9,7 @@ import pl.carrental.reservation.dto.RentalDto;
 import pl.carrental.reservation.exceptions.CarIsAlreadyRentedException;
 import pl.carrental.reservation.exceptions.RentalAlreadyFinishedException;
 import pl.carrental.reservation.exceptions.RentalNotFoundException;
+import pl.carrental.reservation.mapper.RentalMapper;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;

@@ -16,5 +16,4 @@ public class CarDto {
     private CarType carType;
     private BigDecimal pricePerDay;
     private String registrationNumber;
-
 }

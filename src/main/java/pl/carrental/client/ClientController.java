@@ -27,7 +27,8 @@ public class ClientController {
             return service.findAll();
         } else
             return service.findByLastName(lastName);
-    }
+        }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientDto> findById(@PathVariable Long id) {

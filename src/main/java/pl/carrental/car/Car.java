@@ -1,9 +1,8 @@
 package pl.carrental.car;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.carrental.reservation.Rental;
 
 import javax.persistence.*;
@@ -11,10 +10,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Car {
 

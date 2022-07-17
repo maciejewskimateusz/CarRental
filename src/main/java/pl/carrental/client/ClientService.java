@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import pl.carrental.car.exceptions.ClientNotFoundException;
 import pl.carrental.client.dto.ClientCredentialsDto;
 import pl.carrental.client.dto.ClientDto;
-import pl.carrental.client.dto.ClientRegistrationDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
 import pl.carrental.client.exceptions.ClientIsNotAdultException;
+import pl.carrental.client.mapper.ClientCredentialsDtoMapper;
+import pl.carrental.client.mapper.ClientMapper;
+import pl.carrental.client.mapper.ClientRentMapper;
 import pl.carrental.reservation.RentalRepository;
 
 import javax.transaction.Transactional;
@@ -23,28 +25,30 @@ public class ClientService {
 
     private ClientRepository clientRepository;
     private RentalRepository rentalRepository;
-    private PasswordEncoder passwordEncoder;
+    private ClientMapper clientMapper;
 
-    public ClientService(ClientRepository clientRepository, RentalRepository rentalRepository, PasswordEncoder passwordEncoder) {
+    public ClientService(ClientRepository clientRepository, RentalRepository rentalRepository,ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.rentalRepository = rentalRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.clientMapper = clientMapper;
     }
 
     public Optional<ClientDto> findById(Long id) {
         return clientRepository.findById(id)
-                .map(ClientMapper::toDto);
+                .map(client -> clientMapper.toDto(client));
     }
 
     public List<ClientDto> findAll() {
-        return clientRepository.findAll().stream()
-                .map(ClientMapper::toDto)
+        return clientRepository.findAll()
+                .stream()
+                .map(client -> clientMapper.toDto(client))
                 .collect(Collectors.toList());
     }
 
     public List<ClientDto> findByLastName(String lastName) {
-        return clientRepository.findAllByLastNameContainingIgnoreCase(lastName).stream()
-                .map(ClientMapper::toDto)
+        return clientRepository.findAllByLastNameContainingIgnoreCase(lastName)
+                .stream()
+                .map(client -> clientMapper.toDto(client))
                 .collect(Collectors.toList());
     }
 
@@ -58,32 +62,32 @@ public class ClientService {
 
     public List<ClientRentDto> getAllClientActiveRentals(Long clientId) {
         return rentalRepository.findAllByClient_IdAndReturnDateIsNull(clientId)
-                        .stream().map(ClientRentMapper::toDto)
-                        .collect(Collectors.toList());
+                .stream().map(ClientRentMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public ClientDto save(ClientDto client) {
-        if (clientRepository.findByPesel(client.getPesel()).isPresent()) {
+        if (clientRepository.findByEmail(client.getEmail()).isPresent()) {
             throw new AlreadyClientExist();
         }
         if (!checkIfClientIsAdult(client)) {
             throw new ClientIsNotAdultException();
         }
-        Client entity = ClientMapper.toEntity(client);
+        Client entity = clientMapper.toEntity(client);
         Client savedClient = clientRepository.save(entity);
-        return ClientMapper.toDto(savedClient);
+        return clientMapper.toDto(savedClient);
     }
 
     public ClientDto update(ClientDto client) {
-        Optional<Client> clientByPesel = clientRepository.findByPesel(client.getPesel());
+        Optional<Client> clientByPesel = clientRepository.findByEmail(client.getEmail());
         clientByPesel.ifPresent(c -> {
             if (!c.getId().equals(client.getId())) {
                 throw new AlreadyClientExist();
             }
         });
-        Client entity = ClientMapper.toEntity(client);
+        Client entity = clientMapper.toEntity(client);
         Client savedClient = clientRepository.save(entity);
-        return ClientMapper.toDto(savedClient);
+        return clientMapper.toDto(savedClient);
     }
 
     @Transactional
@@ -104,20 +108,20 @@ public class ClientService {
                 .map(ClientCredentialsDtoMapper::map);
     }
 
-    @Transactional
-    public void register(ClientRegistrationDto clientRegistrationDto) {
-        Client newClient = Client.builder()
-                .firstName(clientRegistrationDto.getFirstName())
-                .lastName(clientRegistrationDto.getLastName())
-                .email(clientRegistrationDto.getEmail())
-                .password(passwordEncoder.encode(clientRegistrationDto.getPassword()))
-                .pesel(clientRegistrationDto.getPesel())
-                .idNumber(clientRegistrationDto.getIdNumber())
-                .birthDate(clientRegistrationDto.getBirthDate())
-                .role("USER")
-                .premium(false)
-                .build();
-
-        clientRepository.save(newClient);
-    }
+//    @Transactional
+//    public void register(ClientRegistrationDto clientRegistrationDto) {
+//        Client newClient = Client.builder()
+//                .firstName(clientRegistrationDto.getFirstName())
+//                .lastName(clientRegistrationDto.getLastName())
+//                .email(clientRegistrationDto.getEmail())
+//                .password(passwordEncoder.encode(clientRegistrationDto.getPassword()))
+//                .pesel(clientRegistrationDto.getPesel())
+//                .idNumber(clientRegistrationDto.getIdNumber())
+//                .birthDate(clientRegistrationDto.getBirthDate())
+//                .role("USER")
+//                .premium(false)
+//                .build();
+//
+//        clientRepository.save(newClient);
+//    }
 }

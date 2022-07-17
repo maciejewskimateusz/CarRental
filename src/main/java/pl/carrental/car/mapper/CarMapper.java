@@ -1,10 +1,11 @@
-package pl.carrental.car;
+package pl.carrental.car.mapper;
 
+import pl.carrental.car.Car;
 import pl.carrental.car.dto.CarDto;
 
 public class CarMapper {
 
-    static CarDto toDto(Car entity) {
+    public static CarDto toDto(Car entity) {
         CarDto dto = new CarDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
@@ -15,7 +16,7 @@ public class CarMapper {
         return dto;
     }
 
-    static Car toEntity(CarDto dto) {
+    public static Car toEntity(CarDto dto) {
         Car car = new Car();
         car.setId(dto.getId());
         car.setName(dto.getName());

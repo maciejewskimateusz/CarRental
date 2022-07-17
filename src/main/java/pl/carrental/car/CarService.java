@@ -1,10 +1,14 @@
 package pl.carrental.car;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
 import pl.carrental.car.exceptions.CarNotFoundException;
 import pl.carrental.car.exceptions.DuplicatedRegistrationNumber;
+import pl.carrental.car.mapper.CarMapper;
+import pl.carrental.car.mapper.CarRentalMapper;
 import pl.carrental.reservation.RentalRepository;
 
 import java.util.List;
@@ -17,7 +21,7 @@ public class CarService {
     private CarRepository carRepository;
     private RentalRepository rentalRepository;
 
-    public CarService(CarRepository carRepository, final RentalRepository rentalRepository) {
+    public CarService(CarRepository carRepository, RentalRepository rentalRepository) {
         this.carRepository = carRepository;
         this.rentalRepository = rentalRepository;
     }

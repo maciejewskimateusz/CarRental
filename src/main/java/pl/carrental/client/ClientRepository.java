@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    Optional<Client> findByPesel(String pesel);
-
     List<Client> findAllByLastNameContainingIgnoreCase(String lastName);
 
     Optional<Client> findByEmail(String email);
