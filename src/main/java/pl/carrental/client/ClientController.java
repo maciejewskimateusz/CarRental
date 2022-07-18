@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.carrental.client.dto.ClientDto;
 import pl.carrental.client.dto.ClientRentDto;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -22,12 +23,13 @@ public class ClientController {
     }
 
     @GetMapping
-    List<ClientDto> findAll(@RequestParam(required = false) String lastName) {
+    List<ClientDto> findAll(@RequestParam(required = false) String lastName, @RequestParam(required = false) Integer page) {
         if (lastName == null) {
-            return service.findAll();
+            int paged = page != null && page >= 0 ? page : 0;
+            return service.findAll(paged);
         } else
             return service.findByLastName(lastName);
-        }
+    }
 
 
     @GetMapping("/{id}")
@@ -48,7 +50,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> create(@RequestBody ClientDto client) {
+    public ResponseEntity<ClientDto> create(@Valid @RequestBody ClientDto client) {
         ClientDto savedClient = service.save(client);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()

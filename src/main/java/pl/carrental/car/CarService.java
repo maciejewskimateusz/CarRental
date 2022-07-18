@@ -1,6 +1,7 @@
 package pl.carrental.car;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.carrental.car.dto.CarDto;
@@ -26,10 +27,12 @@ public class CarService {
         this.rentalRepository = rentalRepository;
     }
 
-    List<CarDto> findAll() {
-        return carRepository.findAll()
+    Page<CarDto> findAll(Pageable pageable) {
+        List<CarDto> collect = carRepository.findAll(pageable)
                 .stream().map(CarMapper::toDto)
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(collect);
     }
 
     List<CarDto> findAllByCarType(CarType carType) {

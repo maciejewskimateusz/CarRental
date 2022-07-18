@@ -24,8 +24,8 @@ public class CarController {
     }
 
     @GetMapping
-    public List<CarDto> findAll() {
-        return carService.findAll();
+    public Page<CarDto> findAll(Pageable pageable) {
+        return carService.findAll(pageable);
     }
 
 
