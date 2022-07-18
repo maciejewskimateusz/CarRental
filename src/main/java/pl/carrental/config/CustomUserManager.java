@@ -9,11 +9,11 @@ import pl.carrental.client.ClientService;
 import pl.carrental.client.dto.ClientCredentialsDto;
 
 @Service
-public class CustomInMemoryUserDetailsManager implements UserDetailsService {
+public class CustomUserManager implements UserDetailsService {
 
     private ClientService clientService;
 
-    public CustomInMemoryUserDetailsManager(ClientService clientService) {
+    public CustomUserManager(ClientService clientService) {
         this.clientService = clientService;
     }
 
