@@ -1,8 +1,7 @@
 package pl.carrental.car;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.hibernate.criterion.Order;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import pl.carrental.car.dto.CarDto;
 import pl.carrental.car.dto.CarRentalDto;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class CarService {
 
+    private static final int PAGE_SIZE = 5;
     private CarRepository carRepository;
     private RentalRepository rentalRepository;
 
@@ -27,12 +27,15 @@ public class CarService {
         this.rentalRepository = rentalRepository;
     }
 
-    Page<CarDto> findAll(Pageable pageable) {
-        List<CarDto> collect = carRepository.findAll(pageable)
-                .stream().map(CarMapper::toDto)
-                .collect(Collectors.toList());
+    List<CarDto> findAll(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        PageRequest pageable = PageRequest.of(pageNo, pageSize, sort);
 
-        return new PageImpl<>(collect);
+        Page<Car> pagedCars = carRepository.findAll(pageable);
+        return pagedCars.stream()
+                .map(CarMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     List<CarDto> findAllByCarType(CarType carType) {

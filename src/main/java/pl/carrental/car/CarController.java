@@ -1,7 +1,5 @@
 package pl.carrental.car;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +22,13 @@ public class CarController {
     }
 
     @GetMapping
-    public Page<CarDto> findAll(Pageable pageable) {
-        return carService.findAll(pageable);
+    public List<CarDto> findAll(@RequestParam(defaultValue = "0", required = false) Integer pageNo,
+                                @RequestParam(defaultValue = "5", required = false) Integer pageSize,
+                                @RequestParam(defaultValue = "id", required = false) String sortBy,
+                                @RequestParam(defaultValue = "asc", required = false) String sortDir) {
+        int page = pageNo != null && pageNo >= 0 ? pageNo : 0;
+        int size = pageSize != null && pageSize >= 0 ? pageSize : 0;
+        return carService.findAll(page, size, sortBy, sortDir);
     }
 
 

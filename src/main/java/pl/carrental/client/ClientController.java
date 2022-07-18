@@ -23,10 +23,15 @@ public class ClientController {
     }
 
     @GetMapping
-    List<ClientDto> findAll(@RequestParam(required = false) String lastName, @RequestParam(required = false) Integer page) {
+    List<ClientDto> findAll(@RequestParam(required = false) String lastName,
+                            @RequestParam(defaultValue = "0", required = false) Integer pageNo,
+                            @RequestParam(defaultValue = "5", required = false) Integer pageSize,
+                            @RequestParam(defaultValue = "id", required = false) String sortBy,
+                            @RequestParam(defaultValue = "asc", required = false) String sortDir) {
         if (lastName == null) {
-            int paged = page != null && page >= 0 ? page : 0;
-            return service.findAll(paged);
+            int page = pageNo != null && pageNo >= 0 ? pageNo : 0;
+            int size = pageSize != null && pageSize >= 0 ? pageSize : 0;
+            return service.findAll(page, size, sortBy, sortDir);
         } else
             return service.findByLastName(lastName);
     }
