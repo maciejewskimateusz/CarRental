@@ -2,17 +2,13 @@ package pl.carrental.client;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.carrental.car.exceptions.ClientNotFoundException;
-import pl.carrental.client.dto.ClientCredentialsDto;
 import pl.carrental.client.dto.ClientDto;
 import pl.carrental.client.dto.ClientRentDto;
 import pl.carrental.client.exceptions.AlreadyClientExist;
 import pl.carrental.client.exceptions.ClientIsNotAdultException;
-import pl.carrental.client.mapper.ClientCredentialsDtoMapper;
 import pl.carrental.client.mapper.ClientMapper;
 import pl.carrental.client.mapper.ClientRentMapper;
 import pl.carrental.reservation.RentalRepository;
@@ -31,7 +27,7 @@ public class ClientService {
     private RentalRepository rentalRepository;
     private ClientMapper clientMapper;
 
-    public ClientService(ClientRepository clientRepository, RentalRepository rentalRepository,ClientMapper clientMapper) {
+    public ClientService(ClientRepository clientRepository, RentalRepository rentalRepository, ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.rentalRepository = rentalRepository;
         this.clientMapper = clientMapper;
@@ -75,7 +71,7 @@ public class ClientService {
     }
 
     public ClientDto save(ClientDto client) {
-        if (clientRepository.findByEmail(client.getEmail()).isPresent()) {
+        if (clientRepository.findByPesel(client.getPesel()).isPresent()) {
             throw new AlreadyClientExist();
         }
         if (!checkIfClientIsAdult(client)) {
@@ -87,7 +83,7 @@ public class ClientService {
     }
 
     public ClientDto update(ClientDto client) {
-        Optional<Client> clientByPesel = clientRepository.findByEmail(client.getEmail());
+        Optional<Client> clientByPesel = clientRepository.findByPesel(client.getPesel());
         clientByPesel.ifPresent(c -> {
             if (!c.getId().equals(client.getId())) {
                 throw new AlreadyClientExist();
@@ -111,10 +107,10 @@ public class ClientService {
         return years >= 18;
     }
 
-    public Optional<ClientCredentialsDto> findCredentialsByEmail(String email) {
-        return clientRepository.findByEmail(email)
-                .map(ClientCredentialsDtoMapper::map);
-    }
+//    public Optional<UserCredentialsDto> findCredentialsByEmail(String email) {
+//        return UserRepository.findByEmail(email)
+//                .map(UserCredentialsDtoMapper::map);
+//    }
 
 //    @Transactional
 //    public void register(ClientRegistrationDto clientRegistrationDto) {

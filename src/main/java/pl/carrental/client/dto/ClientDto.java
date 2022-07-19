@@ -11,11 +11,9 @@ import java.time.LocalDate;
 public class ClientDto {
 
     private Long id;
-    private String email;
-    private String password;
     private String firstName;
     private String lastName;
-    private String idNumber;
+    private String pesel;
     private LocalDate birthDate;
     private ClientAddress address;
 }
