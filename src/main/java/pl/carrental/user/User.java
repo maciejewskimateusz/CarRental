@@ -1,5 +1,6 @@
 package pl.carrental.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Table(name = "application_user")
 @NoArgsConstructor
 @Getter
-@Setter
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -22,4 +23,10 @@ public class User {
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+        roles = Set.of("USER");
+    }
 }

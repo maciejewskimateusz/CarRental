@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class CarService {
 
-    private static final int PAGE_SIZE = 5;
     private CarRepository carRepository;
     private RentalRepository rentalRepository;
 

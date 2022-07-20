@@ -24,11 +24,6 @@ import pl.carrental.user.UserService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final UserService userService;
-
-    public SecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
 
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
@@ -40,7 +35,7 @@ public class SecurityConfig {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/user/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
@@ -49,28 +44,28 @@ public class SecurityConfig {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and().httpBasic();
 
-        http.headers().frameOptions().sameOrigin();
+        http.headers().frameOptions( ).sameOrigin();
         return http.build();
     }
 
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        CustomUserDetailService service = new CustomUserDetailService(userService);
-        provider.setUserDetailsService(service);
-        return provider;
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
+//
+//
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        CustomUserDetailService service = new CustomUserDetailService(userService);
+//        provider.setUserDetailsService(service);
+//        return provider;
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y, 12);
     }
 
 
