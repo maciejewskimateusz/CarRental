@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.carrental.user.dto.UserCredentialsDto;
+
+import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -16,9 +19,10 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> register(@RequestBody UserCredentialsDto user){
-//
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody UserCredentialsDto user) {
+        userService.register(user);
+        return ResponseEntity.noContent().build();
+    }
 }
 

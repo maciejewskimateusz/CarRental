@@ -32,7 +32,7 @@ values ('admin@o2.pl', '{bcrypt}$2a$10$cnhblRXX/20NWuCanKMWMOesHAX7q7B3kOZknPMxu
 insert into user_roles(user_id, roles)
 values (1, 'ADMIN');
 
-insert ginto car(name, registration_number, fuel_type, car_type, price_per_day)
+insert into car(name, registration_number, fuel_type, car_type, price_per_day)
 values ('Audi A6', 'EBEYY10', 'DIESEL', 'KOMBI', 150),
     ('BMW X5', 'WW101010', 'PETROL', 'SUV', 350),
     ('Mazda 6', 'EP10921', 'PETROL', 'KOMBI', 200),

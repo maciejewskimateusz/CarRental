@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.carrental.car.exceptions.ClientNotFoundException;
 import pl.carrental.client.dto.ClientDto;
 import pl.carrental.client.dto.ClientRentDto;
-import pl.carrental.client.exceptions.AlreadyClientExist;
+import pl.carrental.client.exceptions.ClientAlreadyExistException;
 import pl.carrental.client.exceptions.ClientIsNotAdultException;
 import pl.carrental.client.mapper.ClientMapper;
 import pl.carrental.client.mapper.ClientRentMapper;
@@ -72,7 +72,7 @@ public class ClientService {
 
     public ClientDto save(ClientDto client) {
         if (clientRepository.findByPesel(client.getPesel()).isPresent()) {
-            throw new AlreadyClientExist();
+            throw new ClientAlreadyExistException();
         }
         if (!checkIfClientIsAdult(client)) {
             throw new ClientIsNotAdultException();
@@ -86,7 +86,7 @@ public class ClientService {
         Optional<Client> clientByPesel = clientRepository.findByPesel(client.getPesel());
         clientByPesel.ifPresent(c -> {
             if (!c.getId().equals(client.getId())) {
-                throw new AlreadyClientExist();
+                throw new ClientAlreadyExistException();
             }
         });
         Client entity = clientMapper.toEntity(client);

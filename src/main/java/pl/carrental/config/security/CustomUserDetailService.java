@@ -4,15 +4,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.stereotype.Component;
-import pl.carrental.user.UserCredentialsDto;
+import org.springframework.stereotype.Service;
+import pl.carrental.user.dto.UserCredentialsDto;
 import pl.carrental.user.UserService;
 
-import javax.annotation.PostConstruct;
-
-@Component
+@Service
 public class CustomUserDetailService implements UserDetailsService {
 
     private final UserService userService;
@@ -22,16 +18,16 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
 
-    @PostConstruct
-    public void initUsers() {
-        User.UserBuilder userBuilder = User.builder();
-        //superadmin / hard
-        String password1 = "{bcrypt}" + new BCryptPasswordEncoder().encode("admin");
-        UserDetails admin = userBuilder.username("admin@o2.pl").password(password1).roles("ADMIN").build();
-        System.out.println(password1);
-
-
-    }
+//    @PostConstruct
+//    public void initUsers() {
+//        User.UserBuilder userBuilder = User.builder();
+//        //superadmin / hard
+//        String password1 = "{bcrypt}" + new BCryptPasswordEncoder().encode("admin");
+//        UserDetails admin = userBuilder.username("admin@o2.pl").password(password1).roles("ADMIN").build();
+//        System.out.println(password1);
+//
+//
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

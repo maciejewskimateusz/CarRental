@@ -1,6 +1,5 @@
 package pl.carrental.client.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.carrental.client.ClientAddress;
