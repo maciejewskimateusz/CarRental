@@ -49,7 +49,7 @@ public class CarController {
     @PutMapping("/{id}")
     public ResponseEntity<CarDto> update(@PathVariable Long id, @RequestBody CarDto carDto) {
         if (!carDto.getId().equals(id)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Niezgodne id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incompatible id");
         }
         CarDto updateCar = carService.update(id, carDto);
         return ResponseEntity.ok(updateCar);

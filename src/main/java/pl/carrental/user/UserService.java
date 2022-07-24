@@ -6,26 +6,28 @@ import pl.carrental.user.dto.UserCredentialsDto;
 import pl.carrental.user.exceptions.UserAlreadyExistException;
 import pl.carrental.user.mapper.UserCredentialsDtoMapper;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
-@Service
 @AllArgsConstructor
+@Service
 public class UserService {
 
-    private UserRepository repository;
-    private UserCredentialsDtoMapper mapper;
+    private final UserRepository repository;
+    private final UserCredentialsDtoMapper mapper;
+
 
     public Optional<UserCredentialsDto> findByEmail(String email) {
         return repository.findByEmail(email)
-                .map(user -> mapper.toDto(user));
+                .map(mapper::toDto);
     }
 
-    @Transactional
     public void register(UserCredentialsDto user) {
-        if (repository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserAlreadyExistException();
-        }
+
+        repository.findByEmail(user.getEmail())
+                .ifPresent(u -> {
+                    throw new UserAlreadyExistException();
+                });
+
         User entity = mapper.toEntity(user);
         repository.save(entity);
     }

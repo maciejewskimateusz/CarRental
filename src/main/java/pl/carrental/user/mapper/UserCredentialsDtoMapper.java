@@ -6,23 +6,22 @@ import org.springframework.stereotype.Component;
 import pl.carrental.user.User;
 import pl.carrental.user.dto.UserCredentialsDto;
 
-@Component
 @AllArgsConstructor
+@Component
 public class UserCredentialsDtoMapper {
 
     private final PasswordEncoder passwordEncoder;
 
-
     public UserCredentialsDto toDto(User user) {
-        return new UserCredentialsDto(user.getId(),
+
+        return new UserCredentialsDto(
                 user.getEmail(),
-                user.getPassword());
+                user.getPassword(), user.getRoles());
     }
 
     public User toEntity(UserCredentialsDto dto) {
-        return new User(dto.getId(),
-                dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword()),
-                dto.getRoles());
+
+        return new User(dto.getEmail(),
+                passwordEncoder.encode(dto.getPassword()));
     }
 }
