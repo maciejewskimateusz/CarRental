@@ -28,6 +28,7 @@ public class CarController {
                                 @RequestParam(defaultValue = "asc", required = false) String sortDir) {
         int page = pageNo != null && pageNo >= 0 ? pageNo : 0;
         int size = pageSize != null && pageSize >= 0 ? pageSize : 0;
+
         return carService.findAll(page, size, sortBy, sortDir);
     }
 

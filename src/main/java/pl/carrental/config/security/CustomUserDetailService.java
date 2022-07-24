@@ -18,17 +18,6 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
 
-//    @PostConstruct
-//    public void initUsers() {
-//        User.UserBuilder userBuilder = User.builder();
-//        //superadmin / hard
-//        String password1 = "{bcrypt}" + new BCryptPasswordEncoder().encode("admin");
-//        UserDetails admin = userBuilder.username("admin@o2.pl").password(password1).roles("ADMIN").build();
-//        System.out.println(password1);
-//
-//
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.findByEmail(username)
